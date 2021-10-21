@@ -1,10 +1,10 @@
 <template>
     <div class="wrapper">
         <div class="result">
-            <h3>MCQ RESULT</h3>
+            <h3 class="title">MCQ RESULT</h3>
             <p class="cone">🎉</p>
             <p>You Got {{ correctAnswers }} Correct Answers</p>
-            <button class="btn">Take Again</button>
+            <button class="btn" @click="$emit('reset-quiz')">Take Again</button>
         </div>
     </div>
 </template>

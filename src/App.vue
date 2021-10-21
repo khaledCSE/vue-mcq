@@ -1,12 +1,16 @@
 <template>
-    <Welcome v-if="!started && !ended" @click="startQuiz" />
+    <Welcome v-if="!started && !ended" @start-quiz="startQuiz" />
     <Quiz
         v-if="started"
         :questions="questions"
         @answer="handleAnswer"
         @finish="endQuiz"
     />
-    <Result v-if="!started && ended" :correctAnswers="correct" />
+    <Result
+        v-if="!started && ended"
+        :correctAnswers="correct"
+        @reset-quiz="resetQuiz"
+    />
 </template>
 
 <script lang="ts">
@@ -37,14 +41,28 @@ export default defineComponent({
         },
         handleAnswer(prop: any) {
             const { questionId, answerGiven } = prop;
-            const question = questions.find((q) => q.id === questionId);
+            const question = this.questions.find((q) => q.id === questionId);
             if (answerGiven === question?.answer) {
                 this.correct = this.correct + 1;
             }
+            const index = this.questions.findIndex((q) => q.id === questionId);
+            const updated = { ...this.questions[index], answered: true };
+            this.questions = [
+                ...this.questions.slice(0, index),
+                updated,
+                ...this.questions.slice(index + 1),
+            ];
         },
         endQuiz() {
             this.started = false;
             this.ended = true;
+
+            console.log(this.questions);
+        },
+        resetQuiz() {
+            this.started = false;
+            this.ended = false;
+            this.correct = 0;
         },
     },
 });
@@ -82,5 +100,8 @@ body {
             opacity: 0.8;
         }
     }
+}
+.title {
+    color: $primary-bg;
 }
 </style>

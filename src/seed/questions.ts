@@ -4,7 +4,8 @@ export interface iQuestion {
     options: string[];
     answer: string;
 }
-export default [
+
+const data = [
     {
         id: 1,
         title: "What is the past form of 'eat'?",
@@ -18,3 +19,7 @@ export default [
         answer: 'did',
     },
 ];
+
+const res = data.map((el) => ({ ...el, answered: false }));
+
+export default res;

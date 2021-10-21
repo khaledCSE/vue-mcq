@@ -10,6 +10,7 @@
                 class="question-card"
                 v-for="question in questions"
                 :key="question.id"
+                :style="{ pointerEvents: question.answered && 'none' }"
             >
                 <p class="question">{{ question.id }}. {{ question.title }}</p>
                 <p
@@ -98,9 +99,17 @@ nav {
             font-weight: bold;
             margin-bottom: 10px;
         }
+        label {
+            margin-left: 10px;
+            font-size: 1.2rem;
+        }
         .answer {
             margin: 10px 0;
             cursor: pointer;
+
+            &:active {
+                font-weight: bold;
+            }
         }
     }
 }
