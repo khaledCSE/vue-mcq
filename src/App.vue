@@ -45,11 +45,15 @@ export default defineComponent({
         },
         handleAnswer(prop: any) {
             const { questionId, answerGiven } = prop;
-            const question = this.questions.find((q) => q.id === questionId);
+            const question = this.questions.find(
+                (q: any) => q.id === questionId
+            );
             if (answerGiven === question?.answer) {
                 this.correct = this.correct + 1;
             }
-            const index = this.questions.findIndex((q) => q.id === questionId);
+            const index = this.questions.findIndex(
+                (q: any) => q.id === questionId
+            );
             const updated = { ...this.questions[index], answered: true };
             this.questions = [
                 ...this.questions.slice(0, index),
