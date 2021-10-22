@@ -2,7 +2,7 @@
     <div class="wrapper">
         <nav>
             <span>Remaining Time: </span>
-            <span>00: 00: 00</span>
+            <span>{{ time }}</span>
         </nav>
 
         <div class="questions">
@@ -42,6 +42,37 @@ export default defineComponent({
     name: 'Quiz',
     props: {
         questions: Array,
+    },
+    data: () => ({
+        time: '',
+    }),
+    mounted() {
+        this.showTimeRemaining();
+    },
+    methods: {
+        timeFormat(time: number) {
+            return time > 10 ? `${time}` : `0${time}`;
+        },
+        showTimeRemaining() {
+            let total_seconds = 1800;
+            const timer = setInterval(() => {
+                total_seconds -= 1;
+
+                if (total_seconds < 0) {
+                    clearInterval(timer);
+                    this.$emit('finish');
+                }
+
+                let seconds = total_seconds % 60;
+                let minutes = Math.floor((total_seconds % 3600) / 60);
+                let hours = Math.floor((total_seconds % (3600 * 24)) / 3600);
+
+                let time = `${this.timeFormat(hours)} : ${this.timeFormat(
+                    minutes
+                )} : ${this.timeFormat(seconds)}`;
+                this.time = time;
+            }, 1000);
+        },
     },
 });
 </script>
