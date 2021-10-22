@@ -28,9 +28,11 @@
                     {{ option }}
                 </p>
             </div>
-        </div>
-        <div class="btn-wrapper">
-            <button class="btn" @click="$emit('finish')">Finish Quiz</button>
+            <div class="btn-wrapper">
+                <button class="btn" @click="$emit('finish')">
+                    Finish Quiz
+                </button>
+            </div>
         </div>
     </div>
 </template>
@@ -87,12 +89,6 @@ export default defineComponent({
     display: flex;
     flex-direction: column;
     gap: 10px;
-
-    .btn-wrapper {
-        width: 100%;
-        display: flex;
-        justify-content: flex-end;
-    }
 }
 
 nav {
@@ -117,6 +113,14 @@ nav {
     display: flex;
     flex-direction: column;
     gap: 20px;
+
+    .btn-wrapper {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        padding: 10px;
+        height: 8vh;
+    }
 
     .question-card {
         width: 100%;

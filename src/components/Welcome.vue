@@ -2,7 +2,7 @@
     <div class="wrapper">
         <div class="welcome">
             <h3 class="title">MCQ TEST</h3>
-            <p>Total 30 Questions</p>
+            <p>Total {{ numQuestions }} Questions</p>
             <button class="btn" @click="$emit('start-quiz')">Start Quiz</button>
         </div>
     </div>
@@ -13,6 +13,9 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
     name: 'Welcome',
+    props: {
+        numQuestions: Number,
+    },
 });
 </script>
 

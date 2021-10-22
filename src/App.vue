@@ -1,5 +1,9 @@
 <template>
-    <Welcome v-if="!started && !ended" @start-quiz="startQuiz" />
+    <Welcome
+        v-if="!started && !ended"
+        @start-quiz="startQuiz"
+        :numQuestions="questions.length"
+    />
     <Quiz
         v-if="started"
         :questions="questions"
