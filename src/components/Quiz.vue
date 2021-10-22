@@ -10,7 +10,6 @@
                 class="question-card"
                 v-for="question in questions"
                 :key="question.id"
-                :style="{ pointerEvents: question.answered && 'none' }"
             >
                 <p class="question">{{ question.id }}. {{ question.title }}</p>
                 <p
