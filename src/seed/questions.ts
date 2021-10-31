@@ -1,7 +1,12 @@
+export interface iOption {
+    text: string;
+    selected: boolean;
+}
+
 export interface iQuestion {
     id: string;
     title: string;
-    options: string[];
+    options: iOption[];
     answer: string;
 }
 
@@ -138,6 +143,18 @@ const data = [
     },
 ];
 
-const res = data.map((el) => ({ ...el, answered: false }));
+const res = data.map((el) => {
+    const converted: iOption[] = [];
+    el.options.forEach((opt) => {
+        converted.push({ text: opt, selected: false });
+    });
+    return {
+        id: el.id,
+        title: el.title,
+        answer: el.answer,
+        answered: false,
+        options: converted,
+    };
+});
 
 export default res;

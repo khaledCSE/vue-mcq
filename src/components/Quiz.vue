@@ -13,24 +13,27 @@
             >
                 <p class="question">{{ question.id }}. {{ question.title }}</p>
                 <p
-                    class="answer"
-                    v-for="option in question.options"
+                    :class="option.selected ? 'answer-selected' : 'answer'"
+                    v-for="(option, optIndex) in question.options"
                     :key="option"
                     @click="
                         $emit('answer', {
                             questionId: question.id,
-                            answerGiven: option,
+                            answerGiven: option.text,
+                            answerIndex: optIndex,
                         })
                     "
                 >
-                    <i class="far fa-circle"></i>
-                    {{ option }}
+                    <i
+                        :class="
+                            option.selected ? 'fas fa-circle' : 'far fa-circle'
+                        "
+                    ></i>
+                    {{ option.text }}
                 </p>
             </div>
             <div class="btn-wrapper">
-                <button class="btn" @click="$emit('finish')">
-                    Finish Quiz
-                </button>
+                <button class="btn" @click="resetTimer">Finish Quiz</button>
             </div>
         </div>
     </div>
@@ -44,8 +47,10 @@ export default defineComponent({
     props: {
         questions: Array,
     },
+    time: '',
     data: () => ({
         time: '',
+        total_seconds: 1800,
     }),
     mounted() {
         this.showTimeRemaining();
@@ -55,24 +60,29 @@ export default defineComponent({
             return time > 10 ? `${time}` : `0${time}`;
         },
         showTimeRemaining() {
-            let total_seconds = 1800;
             const timer = setInterval(() => {
-                total_seconds -= 1;
+                this.total_seconds -= 1;
 
-                if (total_seconds < 0) {
+                if (this.total_seconds < 0) {
                     clearInterval(timer);
                     this.$emit('finish');
                 }
 
-                let seconds = total_seconds % 60;
-                let minutes = Math.floor((total_seconds % 3600) / 60);
-                let hours = Math.floor((total_seconds % (3600 * 24)) / 3600);
+                let seconds = this.total_seconds % 60;
+                let minutes = Math.floor((this.total_seconds % 3600) / 60);
+                let hours = Math.floor(
+                    (this.total_seconds % (3600 * 24)) / 3600
+                );
 
                 let time = `${this.timeFormat(hours)} : ${this.timeFormat(
                     minutes
                 )} : ${this.timeFormat(seconds)}`;
                 this.time = time;
             }, 1000);
+        },
+        resetTimer() {
+            this.total_seconds = 1800;
+            this.$emit('finish');
         },
     },
 });
@@ -143,6 +153,10 @@ nav {
 
             &:active {
                 font-weight: bold;
+            }
+
+            &-selected {
+                color: magenta;
             }
         }
     }

@@ -24,6 +24,12 @@ import Quiz from './components/Quiz.vue';
 import Result from './components/Result.vue';
 import questions from './seed/questions';
 
+interface iQuizProp {
+    questionId: string;
+    answerGiven: string;
+    answerIndex: number;
+}
+
 export default defineComponent({
     name: 'App',
     components: {
@@ -43,11 +49,12 @@ export default defineComponent({
         startQuiz() {
             this.started = true;
         },
-        handleAnswer(prop: any) {
-            const { questionId, answerGiven } = prop;
+        handleAnswer(prop: iQuizProp) {
+            const { questionId, answerGiven, answerIndex } = prop;
             const question = this.questions.find(
                 (q: any) => q.id === questionId
             );
+
             if (answerGiven === question?.answer) {
                 this.correct = this.correct + 1;
             }
@@ -55,6 +62,9 @@ export default defineComponent({
                 (q: any) => q.id === questionId
             );
             const updated = { ...this.questions[index], answered: true };
+
+            updated.options[answerIndex].selected = true;
+
             this.questions = [
                 ...this.questions.slice(0, index),
                 updated,
@@ -65,12 +75,25 @@ export default defineComponent({
             this.started = false;
             this.ended = true;
 
-            console.log(this.questions);
+            // console.log(this.questions);
         },
         resetQuiz() {
+            const reset_questions = this.questions.map((q) => {
+                const options = q.options.map((x) => ({
+                    text: x.text,
+                    selected: false,
+                }));
+                return {
+                    ...q,
+                    options,
+                    answered: false,
+                };
+            });
+
             this.started = false;
             this.ended = false;
             this.correct = 0;
+            this.questions = reset_questions;
         },
     },
 });
