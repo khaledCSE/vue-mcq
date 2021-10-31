@@ -62,7 +62,7 @@ export default defineComponent({
                 (q: any) => q.id === questionId
             );
             const updated = { ...this.questions[index], answered: true };
-
+            updated.options.forEach((el) => (el.selected = false));
             updated.options[answerIndex].selected = true;
 
             this.questions = [
