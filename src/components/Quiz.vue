@@ -10,6 +10,7 @@
                 class="question-card"
                 v-for="question in questions"
                 :key="question.id"
+                :style="{ pointerEvents: question.answered ? 'none' : 'auto' }"
             >
                 <p class="question">{{ question.id }}. {{ question.title }}</p>
                 <p
@@ -51,6 +52,7 @@ export default defineComponent({
     data: () => ({
         time: '',
         total_seconds: 1800,
+        timerInterval: 0,
     }),
     mounted() {
         this.showTimeRemaining();
@@ -60,11 +62,11 @@ export default defineComponent({
             return time > 10 ? `${time}` : `0${time}`;
         },
         showTimeRemaining() {
-            const timer = setInterval(() => {
+            this.timerInterval = setInterval(() => {
                 this.total_seconds -= 1;
 
                 if (this.total_seconds < 0) {
-                    clearInterval(timer);
+                    clearInterval(this.timerInterval);
                     this.$emit('finish');
                 }
 
@@ -82,6 +84,7 @@ export default defineComponent({
         },
         resetTimer() {
             this.total_seconds = 1800;
+            clearInterval(this.timerInterval);
             this.$emit('finish');
         },
     },
