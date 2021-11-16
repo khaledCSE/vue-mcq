@@ -10,7 +10,10 @@
                 class="question-card"
                 v-for="question in questions"
                 :key="question.id"
-                :style="{ pointerEvents: question.answered ? 'none' : 'auto' }"
+                :style="{
+                    pointerEvents: question.answered ? 'none' : 'auto',
+                    background: question.answered && 'lightgray',
+                }"
             >
                 <p class="question">{{ question.id }}. {{ question.title }}</p>
                 <p
